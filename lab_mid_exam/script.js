@@ -1,50 +1,87 @@
-
 // COMMENT SYSTEM - DATA STORAGE
-
 let comments = [];
+let comments2 = [];
 let selectedRating = 0;
-
+let selectedRating2 = 0;
 
 // INITIALIZATION
-
 document.addEventListener('DOMContentLoaded', function() {
-    initializeCommentSystem();
-    initializeStarRating();
-    initializeCharCounter();
-    updateStatistics();
+    initializeCommentSystem('commentForm', 'userName', 'userEmail', 'commentText', 'nameError', 'emailError', 'commentError', 'starRating', 'ratingDisplay', 'charCount', comments, 'totalComments', 'avgRating', 'commentsList', 1);
+    initializeCommentSystem('commentForm2', 'userName2', 'userEmail2', 'commentText2', 'nameError2', 'emailError2', 'commentError2', 'starRating2', 'ratingDisplay2', 'charCount2', comments2, 'totalComments2', 'avgRating2', 'commentsList2', 2);
+    
+    // Initialize no comments messages
+    const commentsList1 = document.getElementById('commentsList');
+    const commentsList2 = document.getElementById('commentsList2');
+    if (commentsList1) commentsList1.innerHTML = '<p class="no-comments">No comments yet. Be the first to share your thoughts!</p>';
+    if (commentsList2) commentsList2.innerHTML = '<p class="no-comments">No comments yet. Be the first to share your thoughts!</p>';
 });
 
-
-// STAR RATING SYSTEM
-
-function initializeStarRating() {
-    const stars = document.querySelectorAll('.star');
-    const ratingDisplay = document.getElementById('ratingDisplay');
-
+// INITIALIZE COMMENT SYSTEM FOR EACH ARTICLE
+function initializeCommentSystem(formId, nameId, emailId, commentId, nameErrorId, emailErrorId, commentErrorId, starRatingId, ratingDisplayId, charCountId, commentsArray, totalCommentsId, avgRatingId, commentsListId, articleNum) {
+    const form = document.getElementById(formId);
+    const commentText = document.getElementById(commentId);
+    const charCount = document.getElementById(charCountId);
+    const stars = document.querySelectorAll(`#${starRatingId} .star`);
+    const ratingDisplay = document.getElementById(ratingDisplayId);
+    const starRating = document.getElementById(starRatingId);
+    
+    if (!form) return;
+    
+    // Character counter
+    commentText.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = length;
+        if (length > 500) {
+            charCount.style.color = '#e74c3c';
+        } else if (length >= 400) {
+            charCount.style.color = '#f39c12';
+        } else {
+            charCount.style.color = '#7f8c8d';
+        }
+    });
+    
+    // Star rating
     stars.forEach(star => {
-        // Hover effect
         star.addEventListener('mouseenter', function() {
             const value = parseInt(this.getAttribute('data-value'));
-            highlightStars(value);
+            highlightStarsForArticle(starRatingId, value);
         });
-
-        // Click to select
+        
         star.addEventListener('click', function() {
-            selectedRating = parseInt(this.getAttribute('data-value'));
-            highlightStars(selectedRating);
-            ratingDisplay.textContent = `Selected: ${selectedRating} star${selectedRating > 1 ? 's' : ''}`;
+            const rating = parseInt(this.getAttribute('data-value'));
+            if (articleNum === 1) {
+                selectedRating = rating;
+            } else {
+                selectedRating2 = rating;
+            }
+            highlightStarsForArticle(starRatingId, rating);
+            ratingDisplay.textContent = `Selected: ${rating} star${rating > 1 ? 's' : ''}`;
         });
     });
-
-    // Reset hover effect on mouse leave
-    const starRating = document.getElementById('starRating');
+    
     starRating.addEventListener('mouseleave', function() {
-        highlightStars(selectedRating);
+        const currentRating = articleNum === 1 ? selectedRating : selectedRating2;
+        highlightStarsForArticle(starRatingId, currentRating);
     });
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        clearErrorsForForm(formId);
+        
+        if (validateFormFields(nameId, emailId, commentId, nameErrorId, emailErrorId, commentErrorId)) {
+            submitCommentForArticle(nameId, emailId, commentId, commentsArray, commentsListId, totalCommentsId, avgRatingId, formId, ratingDisplayId, charCountId, articleNum);
+        }
+    });
+    
+    // Real-time validation
+    document.getElementById(nameId).addEventListener('blur', () => validateNameField(nameId, nameErrorId));
+    document.getElementById(emailId).addEventListener('blur', () => validateEmailField(emailId, emailErrorId));
+    document.getElementById(commentId).addEventListener('blur', () => validateCommentField(commentId, commentErrorId));
 }
 
-function highlightStars(count) {
-    const stars = document.querySelectorAll('.star');
+function highlightStarsForArticle(starRatingId, count) {
+    const stars = document.querySelectorAll(`#${starRatingId} .star`);
     stars.forEach((star, index) => {
         if (index < count) {
             star.classList.add('active');
@@ -54,110 +91,50 @@ function highlightStars(count) {
     });
 }
 
-
-// CHARACTER COUNTER
-
-function initializeCharCounter() {
-    const commentText = document.getElementById('commentText');
-    const charCount = document.getElementById('charCount');
-
-    commentText.addEventListener('input', function() {
-        const length = this.value.length;
-        charCount.textContent = length;
-
-        // Change color based on character count
-        if (length > 500) {
-            charCount.style.color = '#e74c3c';
-        } else if (length >= 400) {
-            charCount.style.color = '#f39c12';
-        } else {
-            charCount.style.color = '#7f8c8d';
-        }
-    });
-}
-
-
-// FORM VALIDATION
-
-function initializeCommentSystem() {
-    const form = document.getElementById('commentForm');
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Clear previous errors
-        clearErrors();
-        
-        // Validate form
-        if (validateForm()) {
-            submitComment();
-        }
-    });
-
-    // Real-time validation on blur
-    document.getElementById('userName').addEventListener('blur', validateName);
-    document.getElementById('userEmail').addEventListener('blur', validateEmail);
-    document.getElementById('commentText').addEventListener('blur', validateComment);
-}
-
-function validateName() {
-    const nameInput = document.getElementById('userName');
-    const nameError = document.getElementById('nameError');
+// VALIDATION FUNCTIONS
+function validateNameField(nameId, errorId) {
+    const nameInput = document.getElementById(nameId);
+    const nameError = document.getElementById(errorId);
     const name = nameInput.value.trim();
 
-    if (name === '') {
+    if (name === '' || name.length < 2 || name.length > 50) {
         showError(nameInput, nameError, 'Name should be between 2 and 50 characters');
         return false;
     }
-
-    if (name.length < 2 || name.length > 50) {
-        showError(nameInput, nameError, 'Name should be between 2 and 50 characters');
-        return false;
-    }
-
     clearFieldError(nameInput, nameError);
     return true;
 }
 
-function validateEmail() {
-    const emailInput = document.getElementById('userEmail');
-    const emailError = document.getElementById('emailError');
+function validateEmailField(emailId, errorId) {
+    const emailInput = document.getElementById(emailId);
+    const emailError = document.getElementById(errorId);
     const email = emailInput.value.trim();
 
-    // Email is optional, but if provided must be valid
     if (email !== '' && !email.includes('@')) {
         showError(emailInput, emailError, 'Please enter a valid email address');
         return false;
     }
-
     clearFieldError(emailInput, emailError);
     return true;
 }
 
-function validateComment() {
-    const commentInput = document.getElementById('commentText');
-    const commentError = document.getElementById('commentError');
+function validateCommentField(commentId, errorId) {
+    const commentInput = document.getElementById(commentId);
+    const commentError = document.getElementById(errorId);
     const comment = commentInput.value.trim();
 
-    if (comment === '') {
+    if (comment === '' || comment.length < 10 || comment.length > 500) {
         showError(commentInput, commentError, 'Comment should between 10 and 500 characters');
         return false;
     }
-
-    if (comment.length < 10 || comment.length > 500) {
-        showError(commentInput, commentError, 'Comment should between 10 and 500 characters');
-        return false;
-    }
-
     clearFieldError(commentInput, commentError);
     return true;
 }
 
-function validateForm() {
-    const isNameValid = validateName();
-    const isEmailValid = validateEmail();
-    const isCommentValid = validateComment();
-
+function validateFormFields(nameId, emailId, commentId, nameErrorId, emailErrorId, commentErrorId) {
+    const isNameValid = validateNameField(nameId, nameErrorId);
+    const isEmailValid = validateEmailField(emailId, emailErrorId);
+    const isCommentValid = validateCommentField(commentId, commentErrorId);
     return isNameValid && isEmailValid && isCommentValid;
 }
 
@@ -171,24 +148,20 @@ function clearFieldError(input, errorElement) {
     errorElement.textContent = '';
 }
 
-function clearErrors() {
-    const inputs = document.querySelectorAll('input, textarea');
-    const errors = document.querySelectorAll('.error-message');
-
+function clearErrorsForForm(formId) {
+    const form = document.getElementById(formId);
+    const inputs = form.querySelectorAll('input, textarea');
+    const errors = form.querySelectorAll('.error-message');
     inputs.forEach(input => input.classList.remove('error'));
     errors.forEach(error => error.textContent = '');
 }
 
-
 // SUBMIT COMMENT
+function submitCommentForArticle(nameId, emailId, commentId, commentsArray, commentsListId, totalCommentsId, avgRatingId, formId, ratingDisplayId, charCountId, articleNum) {
+    const name = document.getElementById(nameId).value.trim();
+    const commentText = document.getElementById(commentId).value.trim();
+    const rating = articleNum === 1 ? selectedRating : selectedRating2;
 
-function submitComment() {
-    const name = document.getElementById('userName').value.trim();
-    const email = document.getElementById('userEmail').value.trim();
-    const commentText = document.getElementById('commentText').value.trim();
-    const rating = selectedRating;
-
-    // Create comment object
     const comment = {
         id: Date.now(),
         name: name,
@@ -197,35 +170,19 @@ function submitComment() {
         timestamp: new Date()
     };
 
-    // Add to comments array
-    comments.push(comment);
-
-    // Display the new comment
-    displayComment(comment);
-
-    // Update statistics
-    updateStatistics();
-
-    // Reset form
-    resetForm();
-
-    // Show success message (optional)
+    commentsArray.push(comment);
+    displayCommentInList(comment, commentsListId);
+    updateStatisticsForArticle(commentsArray, totalCommentsId, avgRatingId);
+    resetFormForArticle(formId, ratingDisplayId, charCountId, articleNum);
     showSuccessMessage();
 }
 
-
-// DISPLAY COMMENTS
-
-function displayComment(comment) {
-    const commentsList = document.getElementById('commentsList');
-    
-    // Remove "no comments" message if exists
+// DISPLAY COMMENT
+function displayCommentInList(comment, commentsListId) {
+    const commentsList = document.getElementById(commentsListId);
     const noComments = commentsList.querySelector('.no-comments');
-    if (noComments) {
-        noComments.remove();
-    }
+    if (noComments) noComments.remove();
 
-    // Create comment element
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment-item';
     commentDiv.innerHTML = `
@@ -236,24 +193,17 @@ function displayComment(comment) {
         <p class="comment-text">${escapeHtml(comment.text)}</p>
         <span class="comment-time">${formatTime(comment.timestamp)}</span>
     `;
-
-    // Insert at the beginning (newest first)
     commentsList.insertBefore(commentDiv, commentsList.firstChild);
 }
 
-
 // UPDATE STATISTICS
+function updateStatisticsForArticle(commentsArray, totalCommentsId, avgRatingId) {
+    const totalCommentsElement = document.getElementById(totalCommentsId);
+    const avgRatingElement = document.getElementById(avgRatingId);
 
-function updateStatistics() {
-    const totalCommentsElement = document.getElementById('totalComments');
-    const avgRatingElement = document.getElementById('avgRating');
+    totalCommentsElement.textContent = commentsArray.length;
 
-    // Update total comments
-    totalCommentsElement.textContent = comments.length;
-
-    // Calculate average rating
-    const ratingsOnly = comments.filter(c => c.rating > 0);
-    
+    const ratingsOnly = commentsArray.filter(c => c.rating > 0);
     if (ratingsOnly.length > 0) {
         const sum = ratingsOnly.reduce((acc, comment) => acc + comment.rating, 0);
         const average = (sum / ratingsOnly.length).toFixed(1);
@@ -262,34 +212,35 @@ function updateStatistics() {
         avgRatingElement.textContent = '0.0';
     }
 
-    // Animate statistics update
     animateStatUpdate(totalCommentsElement);
     animateStatUpdate(avgRatingElement);
 }
 
 function animateStatUpdate(element) {
     element.style.transform = 'scale(1.2)';
-    
     setTimeout(() => {
         element.style.transform = 'scale(1)';
     }, 300);
 }
 
-
 // RESET FORM
-
-function resetForm() {
-    document.getElementById('commentForm').reset();
-    selectedRating = 0;
-    highlightStars(0);
-    document.getElementById('ratingDisplay').textContent = 'No rating selected';
-    document.getElementById('charCount').textContent = '0';
-    clearErrors();
+function resetFormForArticle(formId, ratingDisplayId, charCountId, articleNum) {
+    document.getElementById(formId).reset();
+    if (articleNum === 1) {
+        selectedRating = 0;
+    } else {
+        selectedRating2 = 0;
+    }
+    document.getElementById(ratingDisplayId).textContent = 'No rating selected';
+    document.getElementById(charCountId).textContent = '0';
+    
+    const form = document.getElementById(formId);
+    const starRatingId = articleNum === 1 ? 'starRating' : 'starRating2';
+    highlightStarsForArticle(starRatingId, 0);
+    clearErrorsForForm(formId);
 }
 
-
 // UTILITY FUNCTIONS
-
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -312,7 +263,6 @@ function formatTime(date) {
 }
 
 function showSuccessMessage() {
-    // Create success notification
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -330,7 +280,6 @@ function showSuccessMessage() {
     
     document.body.appendChild(notification);
 
-    // Remove after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(-20px)';
@@ -340,12 +289,4 @@ function showSuccessMessage() {
             notification.remove();
         }, 300);
     }, 3000);
-}
-
-
-// INITIAL NO COMMENTS MESSAGE
-
-if (comments.length === 0) {
-    const commentsList = document.getElementById('commentsList');
-    commentsList.innerHTML = '<p class="no-comments">No comments yet. Be the first to share your thoughts!</p>';
 }

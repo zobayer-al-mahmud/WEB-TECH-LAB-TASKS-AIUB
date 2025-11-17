@@ -64,7 +64,7 @@
             </div>
         </article>
 
-        <!-- Comment Section -->
+        <!-- Comment Section for Article 1 -->
         <section class="comment-section">
             <h2 class="section-title">Reader Comments</h2>
             
@@ -123,6 +123,112 @@
 
             <!-- Comments Display -->
             <div class="comments-list" id="commentsList">
+                <!-- Comments will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Second Article -->
+        <article class="article-content">
+            <div class="article-meta">
+                <span class="category">Business</span>
+                <span class="date">November 17, 2025</span>
+            </div>
+            
+            <h1 class="article-title">Tech Giants Invest $50 Billion in Green Energy Infrastructure</h1>
+            
+            <img src="https://tanahair.net/wp-content/uploads/2024/04/DALL%C2%B7E-2024-04-12-08.41.04-A-futuristic-sustainable-cityscape-in-bright-daylight-emphasizing-renewable-energy-sources.-The-city-is-bustling-with-greenery-and-modern-sleek-arc.webp" alt="Green Energy" class="article-image">
+            
+            <div class="article-body">
+                <p>In an unprecedented collaboration, major technology companies have announced a joint investment of $50 billion in renewable energy infrastructure over the next five years. This historic commitment marks the largest private sector investment in green energy to date.</p>
+                
+                <p>The initiative, announced at the Global Climate Summit, includes companies like TechCorp, DataSystems Inc., and CloudCompute, who collectively operate thousands of data centers worldwide that consume massive amounts of electricity.</p>
+                
+                <h2>Investment Breakdown</h2>
+                
+                <p>The funds will be allocated across multiple renewable energy sectors:</p>
+                
+                <ul>
+                    <li>$20 billion for solar farm development in desert regions</li>
+                    <li>$15 billion for offshore wind energy projects</li>
+                    <li>$10 billion for advanced battery storage technology</li>
+                    <li>$5 billion for green hydrogen research and development</li>
+                </ul>
+                
+                <p>Industry analysts predict this investment will create over 200,000 jobs globally and significantly reduce carbon emissions in the tech sector, which currently accounts for approximately 2% of global emissions.</p>
+                
+                <h2>Environmental Impact</h2>
+                
+                <p>Environmental advocates have praised the initiative. "This is exactly the kind of bold action we need from the private sector," said Maria Rodriguez, Director of the Green Technology Alliance. "These companies are not just talking about sustainability—they're putting substantial resources behind it."</p>
+                
+                <p>The project aims to make all participating companies' operations 100% carbon-neutral by 2030, five years ahead of the Paris Agreement targets. Additionally, the renewable energy generated will exceed the companies' own needs, feeding surplus power back into national grids.</p>
+                
+                <h2>Economic Implications</h2>
+                
+                <p>Beyond environmental benefits, the investment is expected to drive innovation in renewable energy technology and reduce long-term operational costs. Energy economists predict that renewable energy costs will continue to decline as scale increases, making green energy not just environmentally responsible but economically advantageous.</p>
+                
+                <p>The collaboration also includes partnerships with local governments and communities to ensure sustainable development practices and equitable distribution of economic benefits from new energy infrastructure.</p>
+            </div>
+        </article>
+
+        <!-- Comment Section for Article 2 -->
+        <section class="comment-section">
+            <h2 class="section-title">Reader Comments</h2>
+            
+            <!-- Statistics Display -->
+            <div class="comment-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalComments2">0</span>
+                    <span class="stat-label">Total Comments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="avgRating2">0.0</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+            </div>
+
+            <!-- Comment Form -->
+            <div class="comment-form-container">
+                <h3>Share Your Thoughts</h3>
+                <form id="commentForm2" novalidate>
+                    <div class="form-group">
+                        <label for="userName2">Name <span class="required">*</span></label>
+                        <input type="text" id="userName2" name="userName2" placeholder="Enter your name">
+                        <span class="error-message" id="nameError2"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail2">Email (Optional)</label>
+                        <input type="email" id="userEmail2" name="userEmail2" placeholder="your.email@example.com">
+                        <span class="error-message" id="emailError2"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="commentText2">Comment <span class="required">*</span></label>
+                        <textarea id="commentText2" name="commentText2" rows="4" placeholder="Write your comment here (10-500 characters)"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount2">0</span> / 500 characters
+                        </div>
+                        <span class="error-message" id="commentError2"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rate this Article (Optional)</label>
+                        <div class="star-rating" id="starRating2">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <span class="rating-display" id="ratingDisplay2">No rating selected</span>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Post Comment</button>
+                </form>
+            </div>
+
+            <!-- Comments Display -->
+            <div class="comments-list" id="commentsList2">
                 <!-- Comments will be dynamically inserted here -->
             </div>
         </section>
