@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech News - Breaking: AI Revolution in Healthcare</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <h1 class="logo">TechNews Daily</h1>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#tech">Technology</a>
+                <a href="#business">Business</a>
+                <a href="#health">Health</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Article -->
+    <main class="container">
+        <article class="article-content">
+            <div class="article-meta">
+                <span class="category">Technology</span>
+                <span class="date">November 17, 2025</span>
+            </div>
+            
+            <h1 class="article-title">AI Revolution Transforms Healthcare Diagnosis</h1>
+            
+            <img src="https://itbrief.asia/uploads/story/2024/12/11/techday_26169f03bf0a929134f3.webp" alt="AI Healthcare" class="article-image">
+            
+            <div class="article-body">
+                <p>In a groundbreaking development, artificial intelligence systems are now achieving unprecedented accuracy in medical diagnosis, potentially revolutionizing healthcare delivery worldwide. The latest AI models demonstrate diagnostic capabilities that match or exceed human specialists in several key medical fields.</p>
+                
+                <p>Dr. Sarah Martinez, Chief of Innovation at Global Medical Institute, stated, "We're witnessing a paradigm shift in how medical care is delivered. These AI systems can analyze complex medical images, patient histories, and genetic data in seconds, providing insights that would take human doctors hours or days to compile."</p>
+                
+                <h2>Key Developments</h2>
+                
+                <p>The new AI diagnostic platform, unveiled at the International Medical Technology Conference, boasts several impressive features:</p>
+                
+                <ul>
+                    <li>98.5% accuracy in detecting early-stage cancers from medical imaging</li>
+                    <li>Real-time analysis of patient vitals with predictive health alerts</li>
+                    <li>Integration with electronic health records for comprehensive patient assessment</li>
+                    <li>Multi-language support enabling global accessibility</li>
+                </ul>
+                
+                <p>Healthcare providers across North America and Europe have begun pilot programs, with early results showing a 40% reduction in diagnostic errors and a 60% decrease in time-to-diagnosis for complex cases.</p>
+                
+                <h2>Ethical Considerations</h2>
+                
+                <p>While the technology shows immense promise, medical ethicists emphasize the importance of maintaining human oversight. "AI should augment, not replace, human medical expertise," notes Professor James Chen, Director of Medical Ethics at Stanford University. "The human element—empathy, ethical judgment, and patient communication—remains irreplaceable."</p>
+                
+                <p>The technology's developers have implemented strict privacy safeguards and transparency measures, ensuring that AI-assisted diagnoses are clearly marked and that patients maintain full control over their medical data.</p>
+                
+                <h2>Looking Ahead</h2>
+                
+                <p>As the technology continues to evolve, researchers predict that AI-assisted healthcare will become standard practice within the next decade. Investment in healthcare AI is projected to reach $45 billion by 2027, with applications expanding beyond diagnosis to treatment planning, drug discovery, and personalized medicine.</p>
+                
+                <p>For patients, this means faster, more accurate diagnoses, personalized treatment plans, and potentially life-saving early detection of serious conditions. The healthcare industry stands on the brink of its most significant transformation in modern history.</p>
+            </div>
+        </article>
+
+        <!-- Comment Section -->
+        <section class="comment-section">
+            <h2 class="section-title">Reader Comments</h2>
+            
+            <!-- Statistics Display -->
+            <div class="comment-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalComments">0</span>
+                    <span class="stat-label">Total Comments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="avgRating">0.0</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+            </div>
+
+            <!-- Comment Form -->
+            <div class="comment-form-container">
+                <h3>Share Your Thoughts</h3>
+                <form id="commentForm" novalidate>
+                    <div class="form-group">
+                        <label for="userName">Name <span class="required">*</span></label>
+                        <input type="text" id="userName" name="userName" placeholder="Enter your name">
+                        <span class="error-message" id="nameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Email (Optional)</label>
+                        <input type="email" id="userEmail" name="userEmail" placeholder="your.email@example.com">
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="commentText">Comment <span class="required">*</span></label>
+                        <textarea id="commentText" name="commentText" rows="4" placeholder="Write your comment here (10-500 characters)"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> / 500 characters
+                        </div>
+                        <span class="error-message" id="commentError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rate this Article (Optional)</label>
+                        <div class="star-rating" id="starRating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <span class="rating-display" id="ratingDisplay">No rating selected</span>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Post Comment</button>
+                </form>
+            </div>
+
+            <!-- Comments Display -->
+            <div class="comments-list" id="commentsList">
+                <!-- Comments will be dynamically inserted here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 TechNews Daily. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
